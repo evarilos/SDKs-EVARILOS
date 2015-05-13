@@ -15,12 +15,14 @@ import raw_data_pb2
 import urllib2
 import time
 import json
+from generateURL import RequestWithMethod
 import message_evarilos_engine_type1_pb2
 import experiment_results_pb2
 
 apiURL = 'http://ebp.evarilos.eu:5000/'
 
 def get_raw_data_from_collection(db_id, coll_id):
+	"""   """
 	
 	req = RequestWithMethod(apiURL + 'evarilos/raw_data/v1.0/database/' + db_id  + '/collection/' + coll_id + '/message', 'GET', headers={"Content-Type": "application/json"}, data = 'json')
 	response = urllib2.urlopen(req)
@@ -35,6 +37,7 @@ def get_raw_data_from_collection(db_id, coll_id):
 	return messages
 
 def get_raw_measurement(db_id, coll_id, data_id):
+	"""   """
 
 	req = RequestWithMethod(apiURL + 'evarilos/raw_data/v1.0/database/' + db_id  + '/collection/' + coll_id + '/message/' + data_id, 'GET', headers={"Content-Type": "application/json"}, data = 'json')
 	response = urllib2.urlopen(req)
@@ -43,6 +46,8 @@ def get_raw_measurement(db_id, coll_id, data_id):
 	return message
 
 def reshape_to_dictionary(data, num_meas = None, channel = None):
+	"""   """
+
 	if num_meas == 0 or channel == []:
 		return []
 
@@ -60,6 +65,7 @@ def reshape_to_dictionary(data, num_meas = None, channel = None):
 	return message
 
 def give_coordinates(data):
+	"""   """
 
 	message = {}
 	message['true_coordinate_x'] = data['raw_measurement'][1]['receiver_location']['coordinate_x']
@@ -76,6 +82,7 @@ def give_coordinates(data):
 	return message
 
 def calculate_metrics(data):
+	"""   """
 
 	apiURI_ECE = 'http://ebp.evarilos.eu:5002/'
 
@@ -135,16 +142,3 @@ def calculate_metrics(data):
 	response = json.loads(resp.read())
 	return response['primary_metrics']
 
-
-# Enabling DELETE, PUT, etc.
-class RequestWithMethod(urllib2.Request):
-    """Workaround for using DELETE with urllib2"""
-    def __init__(self, url, method, data=None, headers={}, origin_req_host=None, unverifiable=False):
-        self._method = method
-        urllib2.Request.__init__(self, url, data, headers, origin_req_host, unverifiable)
-
-    def get_method(self):
-        if self._method:
-            return self._method
-        else:
-            return urllib2.Request.get_method(self) 

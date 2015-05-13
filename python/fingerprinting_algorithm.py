@@ -2,6 +2,7 @@ from scipy.stats.mstats import mquantiles
 import numpy as np
 
 def most_common(lst):
+    """   """
     return max(set(lst), key=lst.count)
 
 class LocalizationAlgorithm():
@@ -10,6 +11,7 @@ class LocalizationAlgorithm():
     """
 
     def hausdorffDistance(self, A, B):
+        """   """
         distance = 0
         d_min = abs(A[0] - B[0])
         for i in A:
@@ -22,7 +24,7 @@ class LocalizationAlgorithm():
         return distance
 
     def getPositionEstimate(self, training_dataset, fingerprint):
-
+        """   """
         runtime_data = {}
         for i in fingerprint.keys():
             runtime_data[i] = fingerprint[i]
