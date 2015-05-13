@@ -67,11 +67,11 @@ def give_coordinates(data):
 	try:
 		message['true_coordinate_z'] = data['raw_measurement'][1]['receiver_location']['coordinate_z']
 	except:
-		continue
+		sleep(0)
 	try:
 		message['true_room'] = data['raw_measurement'][1]['receiver_location']['room_label']
 	except:
-		continue
+		sleep(0)
 
 	return message
 
@@ -92,9 +92,9 @@ def calculate_metrics(data):
 	experiment.scenario.interference_description = 'dummy' 
 	
 	experiment.store_metrics = False
-	experiment.metrics_storage_URI = None
-	experiment.metrics_storage_database = None
-	experiment.metrics_storage_collection = None
+	experiment.metrics_storage_URI = 'dummy'
+	experiment.metrics_storage_database = 'dummy'
+	experiment.metrics_storage_collection = 'dummy'
 	for key in data.keys():
 		location = experiment.locations.add()
 		location.point_id = int(key)
