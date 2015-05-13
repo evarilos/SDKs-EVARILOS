@@ -34,8 +34,6 @@ def get_raw_data_from_collection(db_id, coll_id):
 
 	return messages
 
-
-
 def get_raw_measurement(db_id, coll_id, data_id):
 
 	req = RequestWithMethod(apiURL + 'evarilos/raw_data/v1.0/database/' + db_id  + '/collection/' + coll_id + '/message/' + data_id, 'GET', headers={"Content-Type": "application/json"}, data = 'json')
@@ -64,10 +62,16 @@ def reshape_to_dictionary(data, num_meas = None, channel = None):
 def give_coordinates(data):
 
 	message = {}
-	message['true_coordinate_x']    = data['raw_measurement'][1]['receiver_location']['coordinate_x']
-	message['true_coordinate_y']    = data['raw_measurement'][1]['receiver_location']['coordinate_y']
-	message['true_coordinate_z']    = data['raw_measurement'][1]['receiver_location']['coordinate_z']
-	message['true_room']       = data['raw_measurement'][1]['receiver_location']['room_label']
+	message['true_coordinate_x'] = data['raw_measurement'][1]['receiver_location']['coordinate_x']
+	message['true_coordinate_y'] = data['raw_measurement'][1]['receiver_location']['coordinate_y']
+	try:
+		message['true_coordinate_z'] = data['raw_measurement'][1]['receiver_location']['coordinate_z']
+	except:
+		continue
+	try:
+		message['true_room'] = data['raw_measurement'][1]['receiver_location']['room_label']
+	except:
+		continue
 
 	return message
 
@@ -78,19 +82,19 @@ def calculate_metrics(data):
 	experiment = message_evarilos_engine_type1_pb2.ece_type1()
 
 	experiment.timestamp_utc = int(round(time.time() * 1000))          
-	experiment.experiment_label = 'EWSN 2015 demo experiment'    
-	experiment.scenario.testbed_label = 'TWIST testbed facility at TU Berlin' 				          
-	experiment.scenario.testbed_description = 'Small to medium size office facility'      
-	experiment.scenario.experiment_description = 'Example experiment using the virtual evaluation platform.'                     
-	experiment.scenario.sut_description = 'WiFI beacon packets RSSI based fingerprinting algorithm.' 
-	experiment.scenario.receiver_description = 'MacBook Pro'               
-	experiment.scenario.sender_description = 'All WiFi APs visible at a given location in the environment'            
-	experiment.scenario.interference_description = 'Minimized interference' 
+	experiment.experiment_label = 'dummy'    
+	experiment.scenario.testbed_label = 'dummy' 				          
+	experiment.scenario.testbed_description = 'dummy'      
+	experiment.scenario.experiment_description = 'dummy'                     
+	experiment.scenario.sut_description = 'dummy' 
+	experiment.scenario.receiver_description = 'dummy'               
+	experiment.scenario.sender_description = 'dummy'            
+	experiment.scenario.interference_description = 'dummy' 
 	
-	experiment.store_metrics = True
-	experiment.metrics_storage_URI = 'http://ebp.evarilos.eu:5013/'
-	experiment.metrics_storage_database = 'ewsn_demo_database'
-	experiment.metrics_storage_collection = 'fingerprinting_algorithm_1'
+	experiment.store_metrics = False
+	experiment.metrics_storage_URI = None
+	experiment.metrics_storage_database = None
+	experiment.metrics_storage_collection = None
 	for key in data.keys():
 		location = experiment.locations.add()
 		location.point_id = int(key)

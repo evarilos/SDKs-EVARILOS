@@ -13,7 +13,6 @@ __status__ = "Development"
 
 from python_sdk import simple_benchmarking as sb
 from python_sdk.generateURL import RequestWithMethod
-from python_sdk import raw_rssi_pb2
 import json
 import pprint
 import time
