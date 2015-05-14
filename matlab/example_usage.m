@@ -1,49 +1,16 @@
 addpath('matlab_sdk');
 warning off;
 tic;
-path_loss_exp = 2.45;
+
+measurements_training = get_raw_data_from_collection('wifi_beacon_rssi_twist_small_macbook', 'training'); 
 
 for i = 1:20
     
-    measurement = get_raw_measurement('ieee802154_rssi_twist_small_stm32w', 'no_interference_1', num2str(i)); 
+    measurement = get_raw_measurement('wifi_beacon_rssi_twist_small_macbook', 'no_interference_1', num2str(i)); 
     time1 = toc;
     
-    est_dist = 0;
-    A = zeros(length(measurement.raw_measurement) - 1, 3);
-    B = zeros(length(measurement.raw_measurement) - 1, 1);
-    est_dist_end = (10 ^ (measurement.raw_measurement{1,end}.rssi / 10)) ^ (- 1/path_loss_exp) / 1000;
-    
-    for num_ap = 1:(length(measurement.raw_measurement)-1)
-        sender_x = measurement.raw_measurement{1,num_ap}.sender_location.coordinate_x;
-        sender_y = measurement.raw_measurement{1,num_ap}.sender_location.coordinate_y;
-        sender_z = measurement.raw_measurement{1,num_ap}.sender_location.coordinate_z;
-        rssi = measurement.raw_measurement{1,num_ap}.rssi;
-        
-        est_dist = (10 ^ (rssi / 10)) ^ (- 1/path_loss_exp) / 1000;
-        
-        A(num_ap, :) = 2 .* [measurement.raw_measurement{1,end}.sender_location.coordinate_x - sender_x, measurement.raw_measurement{1,end}.sender_location.coordinate_y - sender_y,  measurement.raw_measurement{1,end}.sender_location.coordinate_z - sender_z];
-        B(num_ap, :) = (est_dist ^ 2 - est_dist_end ^ 2) - (sender_x ^ 2 - measurement.raw_measurement{1,end}.sender_location.coordinate_x ^ 2) - (sender_y ^ 2 - measurement.raw_measurement{1,end}.sender_location.coordinate_y ^ 2) - (sender_z ^ 2 - measurement.raw_measurement{1,end}.sender_location.coordinate_z ^ 2);        
-    end
-    
-    % Sparsification (QR-factorization)
-    
-    if issparse(A)
-        R = qr(A); 
-    else
-        R = triu(qr(A));
-    end
-    
-    x = R \ (R' \ (A' * B));
-    r = B - A * x;
-    err = R \ (R' \ (A' * r));
-    x = x + err;
-    
-    % Storing the estimated position
-    if isnan(x(1))
-        x(1) = 10;
-        x(2) = 10;
-    end
-    x(3) = 9.53;
+    % Implement the algorithm here
+
     time2 = toc;
     latency = time2-time1;
    
