@@ -22,7 +22,9 @@ import experiment_results_pb2
 apiURL = 'http://ebp.evarilos.eu:5000/'
 
 def get_raw_data_from_collection(db_id, coll_id):
-	"""   """
+	"""  
+		Get all messages in a given collection as a Python dictionary.
+	"""
 	
 	req = RequestWithMethod(apiURL + 'evarilos/raw_data/v1.0/database/' + db_id  + '/collection/' + coll_id + '/message', 'GET', headers={"Content-Type": "application/json"}, data = 'json')
 	response = urllib2.urlopen(req)
@@ -37,7 +39,9 @@ def get_raw_data_from_collection(db_id, coll_id):
 	return messages
 
 def get_raw_measurement(db_id, coll_id, data_id):
-	"""   """
+	"""   
+		Get one message from a collection as a JSON structure. 
+	"""
 
 	req = RequestWithMethod(apiURL + 'evarilos/raw_data/v1.0/database/' + db_id  + '/collection/' + coll_id + '/message/' + data_id, 'GET', headers={"Content-Type": "application/json"}, data = 'json')
 	response = urllib2.urlopen(req)
@@ -46,7 +50,10 @@ def get_raw_measurement(db_id, coll_id, data_id):
 	return message
 
 def reshape_to_dictionary(data, num_meas = None, channel = None):
-	"""   """
+	"""  
+		Shape the message given as JSOn structure to a Pyton dictionary, 
+		optionally filter the data based on the channel, number of runs or sender BSSIDs 
+	"""
 
 	if num_meas == 0 or channel == []:
 		return []
@@ -65,7 +72,10 @@ def reshape_to_dictionary(data, num_meas = None, channel = None):
 	return message
 
 def give_coordinates(data):
-	"""   """
+	"""   
+		Get ground-truth coordinates (X,Y,Z, room label) where the measurement was 
+		taken, given the JSOn structure as an input.
+	"""
 
 	message = {}
 	message['true_coordinate_x'] = data['raw_measurement'][1]['receiver_location']['coordinate_x']
@@ -73,16 +83,19 @@ def give_coordinates(data):
 	try:
 		message['true_coordinate_z'] = data['raw_measurement'][1]['receiver_location']['coordinate_z']
 	except:
-		sleep(0)
+		pass
 	try:
 		message['true_room'] = data['raw_measurement'][1]['receiver_location']['room_label']
 	except:
-		sleep(0)
+		pass
 
 	return message
 
 def calculate_metrics(data):
-	"""   """
+	"""   
+		Calculation of metrics given the Python dictionary containing ground-truth 
+		coordinates, estimates and optionally latencies or power consumption.  
+	"""
 
 	apiURI_ECE = 'http://ebp.evarilos.eu:5002/'
 
@@ -98,6 +111,8 @@ def calculate_metrics(data):
 	experiment.scenario.sender_description = 'dummy'            
 	experiment.scenario.interference_description = 'dummy' 
 	
+	# Change this part carefully, it can be used for storing the 
+	# experiment results in a database 
 	experiment.store_metrics = False
 	experiment.metrics_storage_URI = 'dummy'
 	experiment.metrics_storage_database = 'dummy'

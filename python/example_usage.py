@@ -22,7 +22,7 @@ from fingerprinting_algorithm import *
 
 apiURL = 'http://ebp.evarilos.eu:5000/'
 
-db_id_training = "wifi_beacon_rssi_wilabt1" 
+db_id_training = "wifi_beacon_rssi_twist_small_macbook" 
 coll_id_training = "training" 
 
 # Which data IDs from the runtime set are to be evaluated
@@ -48,7 +48,7 @@ for i in data_ids_runtime:
 	time1 = time.time()
 	
 	# Usage of the SDK function 
-	measurements = sb.get_raw_measurement('wifi_beacon_rssi_wilabt1','runtime',str(i))
+	measurements = sb.get_raw_measurement('wifi_beacon_rssi_twist_small_macbook','runtime',str(i))
 	shaped_measurements = sb.reshape_to_dictionary(measurements)
 	results[i] = algorithm.getPositionEstimate(raw_data_collection_training, shaped_measurements)
 	
