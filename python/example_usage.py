@@ -48,7 +48,7 @@ for i in data_ids_runtime:
 	time1 = time.time()
 	
 	# Usage of the SDK function 
-	measurements = sb.get_raw_measurement('wifi_beacon_rssi_twist_small_macbook','runtime',str(i))
+	measurements = sb.get_raw_measurement('wifi_beacon_rssi_twist_small_macbook','no_interference_1',str(i))
 	shaped_measurements = sb.reshape_to_dictionary(measurements)
 	results[i] = algorithm.getPositionEstimate(raw_data_collection_training, shaped_measurements)
 	
@@ -64,7 +64,7 @@ for i in data_ids_runtime:
 	results[i]['true_coordinate_y'] = true_coordinates['true_coordinate_y']
 	results[i]['true_room'] = true_coordinates['true_room']
 
-	print 'Ground truth ' + str(i) + ':       (x,y,z) = (' + str(true_coordinates['true_coordinate_x']) + ',' + str(true_coordinates['true_coordinate_y']) + ')' 
+	print 'Ground truth ' + str(i) + ':       (x,y) = (' + str(true_coordinates['true_coordinate_x']) + ',' + str(true_coordinates['true_coordinate_y']) + ')' 
 	print 'Estimated room label: ' + results[i]['est_room_label']
 	print 'True room label:      ' + results[i]['true_room']
 	print 'Latency: ' + str(round(results[i]['latency'],3))
@@ -82,7 +82,7 @@ print 'Median localization error:  ' + str(round(metrics['accuracy_error_2D_medi
 print 'Minimum localization error: ' + str(round(metrics['accuracy_error_2D_min'],2))
 print 'Maximum localization error: ' + str(round(metrics['accuracy_error_2D_max'],2))
 print ''
-print 'Room level accuracy:        ' + str(round(metrics['room_accuracy_error_average'],2))
+print 'Room level accuracy: ' + str(round(metrics['room_accuracy_error_average'],2))
 print ''
 print 'Average latency: ' + str(round(metrics['latency_average'],2))
 print 'Median latency:  ' + str(round(metrics['latency_median'],2))
