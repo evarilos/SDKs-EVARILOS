@@ -57,6 +57,7 @@ for i in data_ids_runtime:
 
 	print 'Estimated location ' + str(i) + ': (x,y) = (' + str(round(results[i]['est_coordinate_x'],2)) + ',' + str(round(results[i]['est_coordinate_y'],2)) + ')'
 
+	# Usage of the SDK function 
 	true_coordinates = sb.give_coordinates(measurements)
 
 	results[i]['true_coordinate_x'] = true_coordinates['true_coordinate_x']
