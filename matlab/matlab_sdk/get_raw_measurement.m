@@ -1,6 +1,15 @@
 function [ message ] = get_raw_measurement(db_id, coll_id, data_id)
-%GET_RAW_MEASUREMENT Summary of this function goes here
-%   Detailed explanation goes here
+% GET_RAW_MEASUREMENT Get a raw measurment for the evaluation fo RF-based
+% indoor loclaization algorithms.
+% Check the documentation: https://github.com/flemic/R2DM-EVARILOS
+
+% author = "Filip Lemic"
+% copyright = "Copyright 2015, EVARILOS Project"
+
+% version = "1.0.0"
+% maintainer = "Filip Lemic"
+% email = "lemic@tkn.tu-berlin.de"
+% status = "Development"
 
     apiURL = 'http://ebp.evarilos.eu:5000/';
     
