@@ -49,9 +49,9 @@ def get_raw_measurement(db_id, coll_id, data_id):
 
 	return message
 
-def reshape_to_dictionary(data, num_meas = None, channel = None):
+def reshape_to_dictionary(message, num_meas = None, channel = None):
 	"""  
-		Shape the message given as JSOn structure to a Pyton dictionary, 
+		Shape the message given as JSON structure to a Pyton dictionary, 
 		optionally filter the data based on the channel, number of runs or sender BSSIDs 
 	"""
 
