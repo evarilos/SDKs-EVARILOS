@@ -114,7 +114,7 @@ def calculate_metrics(data):
 	# Change this part carefully, it can be used for storing the 
 	# experiment results in a database 
 	experiment.store_metrics = False
-	experiment.metrics_storage_URI = 'dummy'
+	experiment.metrics_storage_URI = 'http://localhost:5001/'
 	experiment.metrics_storage_database = 'dummy'
 	experiment.metrics_storage_collection = 'dummy'
 	for key in data.keys():

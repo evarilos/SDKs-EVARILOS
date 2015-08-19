@@ -23,6 +23,11 @@ function [ metrics ] = calculate_metrics( results )
     message.scenario = pblib_set(message.scenario, 'receiver_description', 'dummy');
     message.scenario = pblib_set(message.scenario, 'sender_description', 'dummy');
     message.scenario = pblib_set(message.scenario, 'interference_description', 'dummy');
+    
+    message = pblib_set(message,'store_metrics',false);
+	message = pblib_set(message,'metrics_storage_URI','http://localhost:5001/');
+	message = pblib_set(message,'metrics_storage_database','dummy');
+	message = pblib_set(message,'metrics_storage_collection','dummy');
 
     for i = 1:length(results)
         if i == 1
